@@ -1,0 +1,17 @@
+export const el: Record<string, string> = {
+  logo: '[data-testid="nocnoc-logo"]',
+  homepage: ".home-page",
+  fragmentSearch: '[data-testid="search-btn"]',
+  btnCart: '[data-testid="cart-btn"]',
+  btnLogin: '[data-testid="login-btn"]',
+  btnLang: '[data-testid="language-btn"]',
+  btnMenu: '[data-testid="menu-btn"]',
+  menuSideLeft: "#modal .main-nav.header-panel",
+  allMenuList: ".DeptNavDropdown-grid .columno3",
+  new: ".ins-preview-wrapper",
+  fragmentRecommend: '[data-testid="recommend-section"]',
+  inputLogin: "#email-phone",
+  loginInputSection: ".login-landing-page",
+  loginOtpSection: ".otp-login-page",
+  btnLoginSubmit: ".login-landing-page > button",
+};

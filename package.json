@@ -2,7 +2,11 @@
   "name": "playwright-test",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "homepage": "npx playwright test tests/homepage.spec.ts --headless=true --project=chromium --workers=1",
+    "product": "npx playwright test tests/productDetail.spec.ts --headless=true --project=chromium --workers=1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
