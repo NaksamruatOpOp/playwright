@@ -1,0 +1,33 @@
+
+stages:
+  - install
+  - execute
+
+install_dependencies:
+  stage: install
+  image: node:current-alpine3.20
+  script:
+    - npm ci
+    - npx playwright install --with-deps
+
+.template:
+  stage: execute
+  image: mcr.microsoft.com/playwright:v1.21.0-focal
+  script:
+    - npm run ${TEST}
+  artifacts:
+    paths:
+      - test-results
+    when: always
+  only:
+    - main
+
+homepage:
+  extends: .template
+  variables:
+    TEST: homepage
+
+product:
+  extends: .template
+  variables:
+    TEST: product
