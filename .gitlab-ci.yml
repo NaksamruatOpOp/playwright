@@ -14,7 +14,10 @@ install_dependencies:
   stage: execute
   image: mcr.microsoft.com/playwright:v1.21.0-focal
   script:
+    - echo "Running tests for ${TEST}"
     - npm run ${TEST}
+  dependencies:
+    - install_dependencies
   artifacts:
     paths:
       - test-results
