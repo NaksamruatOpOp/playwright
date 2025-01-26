@@ -27,7 +27,7 @@ export async function suiteClick(paramClick: clickOption) {
   const element = page.locator(selector);
   await element.waitFor({ state: "visible" });
   await element.scrollIntoViewIfNeeded();
-  // await closeNewPromotion(page);
+  await closeNewPromotion(page);
   log({ data: "will click" });
   await element.click();
 
@@ -76,14 +76,12 @@ async function suiteWait(page: Page) {
 }
 
 export async function closeNewPromotion(page: Page) {
-  const locator = page.locator(el.new);
+  const locator = page.locator(`${el.new} .ins-close-button`);
   await page.waitForTimeout(2000);
   if (await locator.isVisible()) {
-    await suiteClick({
-      wrapper: el.new,
-      selector: ".ins-close-button",
-      hidden: el.new,
-      page,
-    });
+    await locator.waitFor({ state: "visible" });
+    await locator.scrollIntoViewIfNeeded();
+    await locator.click()
+    expect(locator).toBeHidden();
   } 
 }
