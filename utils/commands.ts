@@ -24,17 +24,12 @@ interface clickOption {
 export async function suiteClick(paramClick: clickOption) {
   let { wrapper = "", selector, visible = "", hidden = "", waitApi = "", statusCode = 200, page } = paramClick;
   selector = `${wrapper} ${selector}`;
-  await closeNewPromotion(page);
   const element = page.locator(selector);
   await element.waitFor({ state: "visible" });
   await element.scrollIntoViewIfNeeded();
-  try {
-    log({ data: 'will click'})
-    await element.click();
-  } catch (error) {
-    await closeNewPromotion(page);
-    await element.click();
-  }
+  // await closeNewPromotion(page);
+  log({ data: "will click" });
+  await element.click();
 
   await suiteWait(page);
 
@@ -70,7 +65,7 @@ export async function suiteFill({ wrapper = '', selector, value, page }: fillOpt
   await expect(element).toHaveValue(value);
 }
 
-export async function log({ text, data }: { text?: string, data?: any }) {
+export async function log({ text = '', data }: { text?: string, data?: any }) {
   console.log("LOG:", text, data);
 }
 
@@ -81,7 +76,7 @@ async function suiteWait(page: Page) {
 }
 
 export async function closeNewPromotion(page: Page) {
-  const locator = page.locator(el.new); // Replace 'css=selector' with your actual selector
+  const locator = page.locator(el.new);
   await page.waitForTimeout(2000);
   if (await locator.isVisible()) {
     await suiteClick({

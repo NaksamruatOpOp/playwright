@@ -20,8 +20,6 @@ export class HomePage {
   readonly btnLang: Locator;
   readonly btnMenu: Locator;
   readonly promoSection: Locator;
-  readonly navLinks: Locator;
-  readonly footerLinks: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -34,8 +32,6 @@ export class HomePage {
     this.btnLang = this.page.locator('[data-testid="language-btn"]');
     this.btnMenu = this.page.locator('[data-testid="menu-btn"]');
     this.promoSection = this.page.locator('[data-testid="promotion-section"]');
-    this.navLinks = this.page.locator("nav a");
-    this.footerLinks = this.page.locator("footer a"); // Example for footer links
   }
 
   async verifyBtnAllMenu() {
@@ -127,7 +123,7 @@ export class HomePage {
     await locator.waitFor({ state: "visible" });
     await suiteClick({
       selector,
-      visible: "main.product-details",
+      visible: el.productDetailPage,
       // waitApi: "product-details",
       page: this.page,
     });
