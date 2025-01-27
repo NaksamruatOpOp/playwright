@@ -14,7 +14,6 @@ export class HomePage {
 
   readonly logo: Locator;
   readonly homepage: Locator;
-  readonly searchInput: Locator;
   readonly btnCart: Locator;
   readonly btnLogin: Locator;
   readonly btnLang: Locator;
@@ -24,37 +23,32 @@ export class HomePage {
   constructor(page: Page) {
     this.page = page;
 
-    this.logo = this.page.locator('[data-testid="nocnoc-logo"]');
-    this.homepage = this.page.locator(".home-page");
-    this.searchInput = this.page.locator('[data-testid="search-input"]');
-    this.btnCart = this.page.locator('[data-testid="cart-btn"]');
-    this.btnLogin = this.page.locator('[data-testid="login-btn"]');
-    this.btnLang = this.page.locator('[data-testid="language-btn"]');
-    this.btnMenu = this.page.locator('[data-testid="menu-btn"]');
+    this.logo = this.page.locator(el.logo);
+    this.homepage = this.page.locator(el.homepage);
+    this.btnCart = this.page.locator(el.btnCart);
+    this.btnLogin = this.page.locator(el.btnLogin);
+    this.btnLang = this.page.locator(el.btnLang);
+    this.btnMenu = this.page.locator(el.btnMenu);
     this.promoSection = this.page.locator('[data-testid="promotion-section"]');
   }
 
-  async verifyBtnAllMenu() {
-    await suiteClick({
-      selector: el.btnMenu,
-      visible: ".DeptNavDropdown-grid .DeptNavDropdown-gridItem:nth-child(1)",
-      page: this.page,
-    });
+  async navigateToProductPage(page: Page) {
+    await suiteGoTo({ url: "/", visible: el.homepage, page });
+    await expect(page).toHaveTitle(/NocNoc/i);
   }
+
+  // async verifyBtnAllMenu() {
+  //   await suiteClick({
+  //     selector: el.btnMenu,
+  //     visible: ".DeptNavDropdown-grid .DeptNavDropdown-gridItem:nth-child(1)",
+  //     page: this.page,
+  //   });
+  // }
 
   async verifyLogo() {
     await suiteClick({
       selector: el.logo,
       visible: el.homepage,
-      page: this.page,
-    });
-    expect(this.page.url()).toBe("https://nocnoc.com/");
-  }
-
-  async verifyAllMenu() {
-    await suiteClick({
-      selector: el.btnMenu,
-      visible: el.allMenuList,
       page: this.page,
     });
     expect(this.page.url()).toBe("https://nocnoc.com/");

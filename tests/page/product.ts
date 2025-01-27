@@ -3,7 +3,6 @@ import {
   closeNewPromotion,
   suiteGoTo,
   suiteClick,
-  suiteFill,
   log,
 } from "../../utils/commands";
 import { el } from "../../utils/elements";
@@ -164,22 +163,3 @@ export class ProductPage {
     });
   }
 }
-
-
-/*
-
-
-
-    const addToCartButton = this.page.locator(".add-to-cart-button");
-    await addToCartButton.click();
-    const cartCount = this.page.locator(".cart-count");
-    expect(await cartCount.innerText()).toBe("1");
-
-  async clickAddToCart() {
-    await this.page.click(this.addToCartButtonSelector);
-  }
-
-  async isCartIconVisible(): Promise<boolean> {
-    return this.page.isVisible(this.cartIconSelector);
-  }
-*/

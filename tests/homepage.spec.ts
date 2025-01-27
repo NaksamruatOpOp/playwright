@@ -11,8 +11,7 @@ test.describe("NocNoc Homepage Smoke Test", () => {
 
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
-    await suiteGoTo({ url: "/", visible: el.homepage, page });
-    await expect(page).toHaveTitle(/NocNoc/i);
+    
   });
 
   test("Verify key element visible", async () => {

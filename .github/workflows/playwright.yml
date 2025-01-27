@@ -2,64 +2,25 @@ name: Playwright Tests
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
-  install_dependencies:
+  setup-and-test:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container: node:current-alpine3.20
+    strategy:
+      matrix:
+        test-suite: [homepage, product]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
       - name: Install dependencies
-        run: |
-          npm ci
-          npx playwright install --with-deps
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
-
-  homepage:
-    needs: install_dependencies
-    runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.21.0-focal
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Run homepage tests
-        env:
-          TEST: homepage
-        run: |
-          echo "Running tests for $TEST"
-          npm run $TEST
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results-homepage
-          path: test-results
-
-  product:
-    needs: install_dependencies
-    runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.21.0-focal
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Run product tests
-        env:
-          TEST: product
-        run: |
-          echo "Running tests for $TEST"
-          npm run $TEST
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results-product
-          path: test-results
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Tests
+        run: npm run ${{ matrix.test-suite }}
