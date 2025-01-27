@@ -138,7 +138,7 @@ export class ProductPage {
   }
 
   async preConAddCart() {
-    await this.navigateToProductPage(this.page);
+    await this.navigateToProductPage();
     await this.checkAddToCart();
   }
 
