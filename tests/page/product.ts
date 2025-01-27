@@ -40,13 +40,13 @@ export class ProductPage {
     this.btnAddCart = this.page.locator(el.btnAddToCart);
   }
 
-  async navigateToProductPage(page: Page) {
+  async navigateToProductPage() {
     await suiteGoTo({
       url: "p/Bluetooth--Portable-Speakers/ลำโพง-Marshall-Woburn-III-Blue/10788372",
       visible: el.productDetailPage,
-      page,
+      page: this.page,
     });
-    await expect(page).toHaveTitle(/Marshall/);
+    await expect(this.page).toHaveTitle(/Marshall/);
   }
 
   async checkProductName() {

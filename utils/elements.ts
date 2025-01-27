@@ -13,6 +13,7 @@ export const el: Record<string, string> = {
   inputLogin: "#email-phone",
   loginInputSection: ".login-landing-page",
   loginOtpSection: ".otp-login-page",
+  loginPasswordSection: ".login-with-password-page",
   btnLoginSubmit: ".login-landing-page > button",
   productDetailPage: "main.product-details",
   fragmentProductDetail: "#product-overview-section",

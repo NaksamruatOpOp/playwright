@@ -5,7 +5,7 @@ test.describe("NocNoc Product Detail Smoke Test", () => {
 
   test.beforeEach(async ({ page }) => {
     product = new ProductPage(page);
-    await product.navigateToProductPage(page);
+    await product.navigateToProductPage();
   });
 
   test("Verify product detail", async () => {

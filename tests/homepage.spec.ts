@@ -1,9 +1,7 @@
 import {
   HomePage,
-  suiteGoTo,
   test,
   expect,
-  el,
 } from "./page/homepage";
 
 test.describe("NocNoc Homepage Smoke Test", () => {
@@ -11,7 +9,7 @@ test.describe("NocNoc Homepage Smoke Test", () => {
 
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
-    
+    await homePage.navigateToHomePage();
   });
 
   test("Verify key element visible", async () => {
@@ -62,11 +60,14 @@ test.describe("NocNoc Homepage Smoke Test", () => {
   });
 
   test("Verify function Login", async () => {
-    await test.step("Verify click btn", async () => {
+    await test.step("Verify click btn login", async () => {
       await homePage.verifyBtnLogin();
     });
+    await test.step("Verify fill email for login", async () => {
+      await homePage.verifyFunctionLogin("email");
+    });
     await test.step("Verify fill phone number for login", async () => {
-      await homePage.verifyFunctionLogin();
+      await homePage.verifyFunctionLogin("phone");
     });
   });
 });

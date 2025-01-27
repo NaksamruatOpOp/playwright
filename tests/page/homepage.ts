@@ -32,9 +32,9 @@ export class HomePage {
     this.promoSection = this.page.locator('[data-testid="promotion-section"]');
   }
 
-  async navigateToProductPage(page: Page) {
-    await suiteGoTo({ url: "/", visible: el.homepage, page });
-    await expect(page).toHaveTitle(/NocNoc/i);
+  async navigateToHomePage() {
+    await suiteGoTo({ url: "/", visible: el.homepage, page: this.page });
+    await expect(this.page).toHaveTitle(/NocNoc/i);
   }
 
   // async verifyBtnAllMenu() {
@@ -133,19 +133,40 @@ export class HomePage {
     });
   }
 
-  async verifyFunctionLogin() {
+  async preLogin() {
+    const locatorBtnClose = this.page.locator(".login-modal button.close");
+    if (await locatorBtnClose.isVisible()) {
+      await locatorBtnClose.click();
+    }
+    await this.verifyBtnLogin();
+  }
+
+  async verifyFunctionLogin(loginType: string) {
+    await this.preLogin();
+    const login = {
+      phone: {
+        value: "0935758133",
+        visible: el.loginOtpSection,
+      },
+      email: {
+        value: "camp.103.camp@gmail.com",
+        visible: el.loginPasswordSection,
+      },
+    };
+    const { value, visible } = login[loginType];
     const locator = this.page.locator(el.btnLogin);
     await locator.waitFor({ state: "visible" });
     await suiteFill({
       wrapper: el.loginInputSection,
       selector: el.inputLogin,
-      value: "0999991234",
+      value,
       page: this.page,
     });
     await suiteClick({
       selector: el.btnLoginSubmit,
-      visible: el.loginOtpSection,
+      visible,
       page: this.page,
     });
   }
 }
+
