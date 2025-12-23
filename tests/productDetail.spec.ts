@@ -9,7 +9,7 @@ test.describe("NocNoc Product Detail Smoke Test", () => {
   });
 
   test("Verify product detail", async () => {
-    await test.step("Verify display product info ", async () => {
+    await test.step("Verify display product info", async () => {
       const elementsList = [
         { name: "Product Name", element: product.productName },
         { name: "Product Price", element: product.productPrice },
@@ -22,7 +22,7 @@ test.describe("NocNoc Product Detail Smoke Test", () => {
       ];
 
       elementsList.forEach(({ name, element }) => {
-        test.step(`Check visibility of ${name}`, async () => {
+        await test.step(`Check visibility of ${name}`, async () => {
           await expect(element).toBeVisible();
         });
       });
@@ -49,26 +49,23 @@ test.describe("NocNoc Product Detail Smoke Test", () => {
   test("Verify add product to cart", async ({ page }) => {
     const locatorAmountProductInCart = page.locator(`${el.btnCart} > div`);
     await test.step("Verify click add to cart", async () => {
-      await expect(locatorAmountProductInCart).not.toBeVisible();
+      await expect(locatorAmountProductInCart).toBeHidden();
       await product.selectProduct();
       await product.checkAddToCart();
       await product.checkSummaryDialog();
-      const AmountProductInCart = await page.textContent(`${el.btnCart} > div`);
-      expect(AmountProductInCart).toEqual("1");
+      await expect(locatorAmountProductInCart).toHaveText("1");
     });
     await test.step("Verify click cancel on summary cart", async () => {
       await product.preConAddCart();
       await product.checkFunctionButton('cancel');
       await expect(locatorAmountProductInCart).toBeVisible();
-      const AmountProductInCart = await page.textContent(`${el.btnCart} > div`);
-      expect(AmountProductInCart).toEqual("2");
+      await expect(locatorAmountProductInCart).toHaveText("2");
     });
     await test.step("Verify click confirm on summary cart", async () => {
       await product.preConAddCart();
       await product.checkFunctionButton("confirm");
       await expect(locatorAmountProductInCart).toBeVisible();
-      const AmountProductInCart = await page.textContent(`${el.btnCart} > div`);
-      expect(AmountProductInCart).toEqual("2");
+      await expect(locatorAmountProductInCart).toHaveText("2");
     });
   });
 });

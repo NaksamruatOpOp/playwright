@@ -68,8 +68,8 @@ export class ProductPage {
       .waitFor({ state: "visible" });
     await tabDefault.waitFor({ state: "visible" });
     await tabDefault.scrollIntoViewIfNeeded();
-    expect(tabDefault).toBeVisible();
-    expect(tabDefault).toHaveClass(/active/);
+    await expect(tabDefault).toBeVisible();
+    await expect(tabDefault).toHaveClass(/active/);
   }
 
   async checkInfoMenu({ tab = "desc" }: { tab: string }) {

@@ -55,13 +55,13 @@ export class HomePage {
   }
 
   async verifySearch({
-    value = "",
-    waitApi = "",
-    statusCode = 200,
+    value = '',
+    waitApi = '',
+    // statusCode,
   }: {
     value?: string;
     waitApi?: string;
-    statusCode?: number;
+    // statusCode?: number;
   }) {
     await suiteFill({
       wrapper: el.fragmentSearch,

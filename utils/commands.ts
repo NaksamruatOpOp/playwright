@@ -1,3 +1,4 @@
+ 
 import { Page, expect } from "@playwright/test";
 import { el } from "./elements";
 interface gotoOption {
@@ -82,6 +83,6 @@ export async function closeNewPromotion(page: Page) {
     await locator.waitFor({ state: "visible" });
     await locator.scrollIntoViewIfNeeded();
     await locator.click()
-    expect(locator).toBeHidden();
+    await expect(locator).toBeHidden();
   } 
 }
