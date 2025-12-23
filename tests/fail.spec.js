@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '@playwright/test';
 
-test("Failing ESLint test", async ({ page }) => {
-        await page.goto("https://example.com")
-expect(await page.title()).toBe("Example Domain")
-})
+test('Failing ESLint test', async ({ page }) => {
+  await page.goto('https://example.com');
+  expect(await page.title()).toBe('Example Domain');
+});
