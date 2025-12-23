@@ -1,40 +1,52 @@
-# Playwright Execution Guide
+# 🎭 Playwright Execution & Code Quality Guide
 
-Follow these steps to execute your Playwright tests:
+This repository is configured for **Playwright end-to-end testing** with automated **code quality enforcement** using:
 
-## Prerequisites
-1. Open a terminal in the project directory.
+- ESLint v9 (Flat Config)
+- Prettier
+- Husky (pre-commit hooks)
+- lint-staged
 
-## Commands to Run Tests
-
-| Test File                  | Command              |
-|----------------------------|----------------------|
-| `homepage.spec.ts`         | `npm run homepage`  |
-| `productDetail.spec.ts`    | `npm run product`   |
-
-### Steps to Execute
-1. Open the terminal in the project directory.
-2. Use the corresponding command for the desired test file:
-   - For `homepage.spec.ts`: Run `npm run homepage`.
-   - For `productDetail.spec.ts`: Run `npm run product`.
-
-
-
-## About this Setup
-
-This project is configured for Node.js and Playwright with a focus on automated code quality using pre-commit hooks (Husky), ESLint v9, and Prettier.
-
-### Highlights
-- **Prettier**: Automatically formats code.
-- **ESLint (v9)**: Ensures code quality and catches problems.
-- **Pre-commit blocking**: Commits are blocked if any lint or format errors exist.
-- **Performance**: Only staged files are checked for speed.
+All checks run automatically **before every commit** to ensure clean, consistent, and reliable code.
 
 ---
 
-## Quick Start
+## 🚀 Playwright Test Execution
 
 ### Prerequisites
+- Open a terminal in the project root directory
+- Install dependencies using `npm install`
+
+### Available Test Commands
+
+| Test File               | Command            |
+|-------------------------|--------------------|
+| `homepage.spec.ts`      | `npm run homepage` |
+| `productDetail.spec.ts` | `npm run product`  |
+
+### Run Tests
+```sh
+npm run homepage
+npm run product
+```
+
+---
+
+## 🧩 About This Setup
+
+This project enforces **automated linting and formatting** before code is committed.
+
+### Highlights
+- **Prettier**: Automatically formats code
+- **ESLint v9**: Detects bugs and enforces best practices
+- **Husky**: Blocks bad commits
+- **lint-staged**: Runs checks only on staged files for speed
+
+---
+
+## ⚡ Quick Start
+
+### System Requirements
 - Node.js ≥ 18
 - npm ≥ 9
 - Git
@@ -46,59 +58,79 @@ npm -v
 git --version
 ```
 
-### 1. Install Dev Dependencies
+---
+
+## 📦 Install Dev Dependencies
 
 ```sh
-npm install --save-dev husky lint-staged eslint @eslint/js prettier
+npm install --save-dev   husky   lint-staged   eslint   @eslint/js   prettier   @typescript-eslint/parser   @typescript-eslint/eslint-plugin   eslint-plugin-playwright
 ```
 
-### 2. Initialize Git (if you haven't already)
+---
+
+## 🗂 Initialize Git (If Needed)
 
 ```sh
 git init
 ```
 
-### 3. Set Up Husky Pre-commit Hook
+---
 
-- Set the Git hooks path:
-  ```sh
-  git config core.hooksPath .husky
-  ```
-  Verify:
-  ```sh
-  git config core.hooksPath   # Output should be: .husky
-  ```
-- Create the hook file:
-  ```sh
-  mkdir -p .husky
-  echo '#!/bin/sh' > .husky/pre-commit
-  echo 'npx lint-staged' >> .husky/pre-commit
-  chmod +x .husky/pre-commit
-  ```
+## 🪝 Husky Pre-commit Setup
 
-### 4. Configure lint-staged
+### Set Git Hooks Path
+```sh
+git config core.hooksPath .husky
+```
 
-Add this to your `package.json`:
+Verify:
+```sh
+git config core.hooksPath
+# Expected: .husky
+```
+
+### Create Pre-commit Hook
+```sh
+mkdir -p .husky
+echo '#!/bin/sh' > .husky/pre-commit
+echo 'npx lint-staged' >> .husky/pre-commit
+chmod +x .husky/pre-commit
+```
+
+---
+
+## 🧪 lint-staged Configuration
+
+Add to `package.json`:
+
 ```json
-"lint-staged": {
-  "**/*.{js,ts,json,md}": [
-    "prettier --write"
-  ],
-  "**/*.{js,ts}": [
-    "eslint --max-warnings=0"
-  ]
+{
+  "lint-staged": {
+    "*.{js,ts,tsx,jsx,json,md}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  }
 }
 ```
-- **Prettier**: Formats staged files before commit.
-- **ESLint**: Lint errors block the commit.
 
-### 5. Configure ESLint v9
+### Behavior
+- Prettier runs first (formatting)
+- ESLint runs second (logic and rules)
+- ❌ ESLint errors block commits
+- ⚠️ Warnings do NOT block commits
 
-- ESLint v9 requires `eslint.config.js` (not `.eslintrc.*`).
+---
 
-**`eslint.config.js`:**
+## 🔍 ESLint v9 Configuration (Flat Config)
+
+> ESLint v9 **requires** `eslint.config.js`  
+> `.eslintrc.*` is NOT supported
+
 ```js
 import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import playwright from 'eslint-plugin-playwright';
 
 export default [
   {
@@ -109,24 +141,26 @@ export default [
       'dist/**',
     ],
   },
+
+  ...tseslint.configs.recommended,
+  playwright.configs['flat/recommended'],
+
   {
-    files: ['**/*.{js,ts}'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-    },
     rules: {
-      ...js.configs.recommended.rules,
-      'no-unused-vars': 'error',
-      'no-console': 'warn',
+      indent: 'off',
+      quotes: 'off',
+      semi: 'off',
+      'playwright/no-networkidle': 'off',
     },
   },
 ];
 ```
 
-### 6. Configure Prettier
+---
 
-**`.prettierrc.json`:**
+## 🎨 Prettier Configuration
+
+### `.prettierrc.json`
 ```json
 {
   "semi": true,
@@ -139,8 +173,8 @@ export default [
 }
 ```
 
-**`.prettierignore`:**
-```
+### `.prettierignore`
+```txt
 node_modules
 playwright-report
 test-results
@@ -148,10 +182,11 @@ dist
 *.min.js
 ```
 
-### 7. Configure .gitignore
+---
 
-**`.gitignore`:**
-```
+## 🚫 Git Ignore
+
+```txt
 node_modules
 playwright-report
 test-results
@@ -162,46 +197,45 @@ dist
 
 ---
 
-## 8. Verifying the Setup
+## 🧠 ESLint vs Prettier
 
-- **Test ESLint**
-  ```sh
-  npx eslint .
-  ```
-- **Test Prettier**
-  ```sh
-  npx prettier . --check
-  ```
-- **Test Pre-commit Hook:**
-  1. _Fail Case:_
-     - Create a file (`bad.js`):
-       ```js
-       const unused = 123
-       ```
-     - Add and commit:
-       ```sh
-       git add bad.js
-       git commit -m "this must fail"
-       ```
-     - **Result:** Commit is blocked.
-  2. _Pass Case:_
-     - Create a file (`good.js`):
-       ```js
-       const used = 123;
-       console.log(used);
-       ```
-     - Add and commit:
-       ```sh
-       git add good.js
-       git commit -m "this should pass"
-       ```
-     - **Result:** Commit succeeds.
+| Tool     | Responsibility                        |
+|----------|----------------------------------------|
+| ESLint   | Logic, bugs, Playwright best practices |
+| Prettier | Code formatting only                   |
+| Husky    | Enforces checks before commit          |
+| lint-staged | Runs checks on staged files only   |
 
 ---
 
-## Suggested Project Structure
+## 🧪 Pre-commit Validation
 
+### ❌ Fail Case
+```js
+const unused = 123
 ```
+
+```sh
+git add bad.js
+git commit -m "this must fail"
+```
+
+### ✅ Pass Case
+```js
+const used = 123;
+console.log(used);
+```
+
+```sh
+git add good.js
+git commit -m "this should pass"
+```
+
+---
+
+## 🗂 Recommended Project Structure
+
+```txt
 .
 ├── .husky/
 │   └── pre-commit
@@ -215,36 +249,21 @@ dist
 
 ---
 
-## Key Notes
+## 📝 Notes
 
-- Husky v9: No `husky install`; no `husky.sh`.
-- ESLint v9: Requires `eslint.config.js`.
-- Formatting (Prettier) and linting (ESLint) are enforced before commits.
-- CI/CD pipelines should still run full lint/format checks.
-
----
-
-## Optional Enhancements
-
-- Add the Playwright ESLint plugin.
-- Extend ESLint config for TypeScript.
-- Add commit message linting.
-- Run lint/format checks in CI.
+- Husky v9 does NOT use `husky install`
+- ESLint v9 uses Flat Config only
+- Prettier runs via lint-staged
+- CI should still run full lint checks
 
 ---
 
-## Troubleshooting
+## 🎯 Conclusion
 
-- **Husky not running?**  
-  Ensure `.husky` is set:  
-  `git config core.hooksPath .husky`
-- **Permission errors?**  
-  Run: `chmod +x .husky/pre-commit`
-- **ESLint config not found?**  
-  Ensure `eslint.config.js` is present (required by ESLint v9).
+This setup ensures:
+- Clean commits
+- Consistent formatting
+- Fast feedback
+- Enforced Playwright best practices
 
----
-
-## Conclusion
-
-This workflow keeps your codebase consistent and safe by ensuring that every commit is formatted and linted before entering your repository.
+Happy testing 🚀
