@@ -2,7 +2,19 @@
   "name": "playwright-test",
   "version": "1.0.0",
   "main": "index.js",
+  "lint-staged": {
+    "**/*.{js,ts}": [
+        "eslint --fix",
+        "prettier --write"
+      ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "scripts": {
+    "prepare": "husky",
     "homepage": "npx playwright test tests/homepage.spec.ts --project=chromium --workers=2",
     "product": "npx playwright test tests/productDetail.spec.ts --project=chromium --workers=2"
   },
@@ -15,6 +27,11 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
-    "@types/node": "^22.10.10"
+    "@types/node": "^22.10.10",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4"
   }
 }
