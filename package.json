@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "lint-staged": {
-    "**/*.{js,ts,json,md}": ["prettier --write"],
-    "**/*.{js,ts}": ["eslint --fix --max-warnings=0"]
+    "*.{ts,js,tsx,jsx,json,md}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "husky": {
     "hooks": {
